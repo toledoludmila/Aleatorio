@@ -5,10 +5,11 @@
  */
 package DAO;
 
+import Modelo.Gene;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,26 +17,43 @@ import java.sql.SQLException;
  */
 public class DAOLocalDpt {
         
-    public void viewDeptLocations(int dptId){
+    public static void viewDeptLocations(String sqlResultado){
         
-        PreparedStatement instrucao = null;
         Connection conexao = null;
-        ResultSet resultado = null;
+        PreparedStatement instrucao = null;
         String sql = "";
-                
-        sql = "USE empresa_teste; CREATE OR REPLACE VIEW `dept_locations` AS SELECT * FROM dept_locationsx WHERE id = ?;;";
-        //conexao = ConexaoBD.conectarEmpresa();
         
-        try{
+        ConexaoBD con = new ConexaoBD();
+        con.conectarEmpresa();
+        
+        sql = "CREATE OR REPLACE VIEW dept_locations AS SELECT * FROM dept_locationsx WHERE" + sqlResultado +";";
+        System.out.println(sql);
+        try {
             instrucao = conexao.prepareStatement(sql);
-            instrucao.setInt(1, dptId);
-            resultado = instrucao.executeQuery();
+            instrucao.executeUpdate();
             
-            System.out.println(resultado);
-                                  
-        }catch(SQLException excecao){
+            conexao.commit();
+            conexao.close();
             
-            System.out.println("não executou consulta");
+        } catch (SQLException excecao){
+            
+            System.out.println("view-localdpt: " + excecao.getMessage());
+        }    
+    }
+    
+    public static String buscarDeptLocations(ArrayList<Gene> listaGene){
+        
+        String sqlResultado ="";
+        
+        for (int i=0; i<listaGene.size(); i++){
+            
+            if (i == listaGene.size()-1){
+                sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla();
+            }else{
+                sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla() + " OR";
+            }
         }
+        
+        return sqlResultado;
     }
 }

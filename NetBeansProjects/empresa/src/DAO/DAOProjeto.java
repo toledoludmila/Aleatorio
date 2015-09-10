@@ -5,11 +5,13 @@
  */
 package DAO;
 
+import Modelo.Gene;
 import Modelo.Projeto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,51 +19,43 @@ import java.sql.SQLException;
  */
 public class DAOProjeto {
     
-    public void viewProject(int pnoId){
+    public static void viewProject(String sqlResultado){
         
-        PreparedStatement instrucao = null;
         Connection conexao = null;
-        ResultSet resultado = null;
-        String sql = "";
-                
-        sql = "USE empresa_teste; CREATE OR REPLACE VIEW `project` AS SELECT * FROM projectx WHERE pnumber = ?;;";
-        //conexao = ConexaoBD.conectarEmpresa();
-        
-        try{
-            instrucao = conexao.prepareStatement(sql);
-            instrucao.setInt(1, pnoId);
-            resultado = instrucao.executeQuery();
-            instrucao.executeUpdate();
-            
-            System.out.println(resultado);
-                                  
-        }catch(SQLException excecao){
-            
-            System.out.println("não executou consulta");
-        }
-    }
-    
-    public Projeto consulta(){
-            
-        Projeto projeto = null;
         PreparedStatement instrucao = null;
-        Connection conexao = null;
-        ResultSet resultado = null;
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
+        con.conectarEmpresa();
         
-        sql = "SELECT * FROM projectx WHERE pnumber = 4999;";
-        conexao = con.conectarEmpresaTeste();
-                
-        try{
+        sql = "CREATE OR REPLACE VIEW project AS SELECT * FROM projectx WHERE" + sqlResultado +";";
+        System.out.println(sql);
+        try {
             instrucao = conexao.prepareStatement(sql);
-            resultado = instrucao.executeQuery();
-                        
-        }catch(SQLException excecao){
+            instrucao.executeUpdate();
             
-            System.out.println("não executou consulta");
+            conexao.commit();
+            conexao.close();
+            
+        } catch (SQLException excecao){
+            
+            System.out.println("view-project: " + excecao.getMessage());
+        }    
+    }
+    
+    public static String buscarDependent(ArrayList<Gene> listaGene){
+        
+        String sqlResultado ="";
+        
+        for (int i=0; i<listaGene.size(); i++){
+            
+            if (i == listaGene.size()-1){
+                sqlResultado = sqlResultado + " pnumber = " + listaGene.get(i).getTupla();
+            }else{
+                sqlResultado = sqlResultado + " pnumber = " + listaGene.get(i).getTupla() + " OR";
+            }
         }
-        return projeto;
+        
+        return sqlResultado;
     }
 }

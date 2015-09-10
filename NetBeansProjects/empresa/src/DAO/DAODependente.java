@@ -41,7 +41,7 @@ public class DAODependente {
         }    
     }
     
-    public static String buscarEmployee(ArrayList<Gene> listaGene){
+    public static String buscarDependent(ArrayList<Gene> listaGene){
         
         String sqlResultado ="";
         
