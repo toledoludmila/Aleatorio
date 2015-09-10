@@ -5,10 +5,8 @@
  */
 package Teste;
 
-import static DAO.DAOEmpregado.buscaEmployeex;
-import static DAO.DAOEmpregado.insertEmployee;
-import static DAO.DAOEmpregado.refEmployee;
-import Modelo.Empregado;
+import static DAO.DAOEmpregado.buscarEmployee;
+import static DAO.DAOEmpregado.viewEmployee;
 import Modelo.Gene;
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,40 +41,40 @@ public class SelecaoAleatoria {
                                 
                 break;
                     
-                case 2:
-                    resultadoTupla = randInt(1,1000);
-                    gene.setTabela(selTabela);
-                    gene.setTupla(resultadoTupla);
-                 
-                    break;
+            case 2:
+                resultadoTupla = randInt(1,1000);
+                gene.setTabela(selTabela);
+                gene.setTupla(resultadoTupla);
+
+                break;
                     
-                case 3: 
-                    resultadoTupla = randInt(1,5000);
-                    gene.setTabela(selTabela);
-                    gene.setTupla(resultadoTupla);
-                  
-                    break;
-                
-                case 4:
-                    resultadoTupla = randInt(1,75000);
-                    gene.setTabela(selTabela);
-                    gene.setTupla(resultadoTupla);
-                    
-                    break;
-                
-                case 5:
-                    resultadoTupla = randInt(1,50000);
-                    gene.setTabela(selTabela);
-                    gene.setTupla(resultadoTupla);
-                    
-                    break;
-                
-                case 6:
-                    resultadoTupla = randInt(1,10000);
-                    gene.setTabela(selTabela);
-                    gene.setTupla(resultadoTupla);
-                    
-                    break;
+            case 3: 
+                resultadoTupla = randInt(1,5000);
+                gene.setTabela(selTabela);
+                gene.setTupla(resultadoTupla);
+
+                break;
+
+            case 4:
+                resultadoTupla = randInt(1,75000);
+                gene.setTabela(selTabela);
+                gene.setTupla(resultadoTupla);
+
+                break;
+
+            case 5:
+                resultadoTupla = randInt(1,50000);
+                gene.setTabela(selTabela);
+                gene.setTupla(resultadoTupla);
+
+                break;
+
+            case 6:
+                resultadoTupla = randInt(1,10000);
+                gene.setTabela(selTabela);
+                gene.setTupla(resultadoTupla);
+
+                break;
         }
               
         return gene;
@@ -85,25 +83,22 @@ public class SelecaoAleatoria {
     public static void resultIndividuo(int indv){
         
         //ArrayList<ResultSet> listaResultado = new ArrayList<ResultSet>();
-        ArrayList<Empregado> listaIndividuo = new ArrayList<Empregado>();
+        ArrayList<Gene> listaGene = new ArrayList<Gene>();
         Gene gene;
-        Empregado empregado;
-        Empregado empRef;
-        
+                
         for (int i =0; i< indv; i++){
             
             int selTabela = 1;//randInt(2,3);
             gene = new Gene();
-            empregado = new Empregado();
             
             gene = selecaoGene(selTabela);
-            empregado = buscaEmployeex(gene);
-            empRef = refEmployee(gene);
-            listaIndividuo.add(empregado);
-            listaIndividuo.add(empRef);
+            listaGene.add(gene);
             
         }
-        insertEmployee(listaIndividuo);     
+        String resultado = buscarEmployee(listaGene);
+        System.out.println(resultado);
+        viewEmployee(resultado);
+           
     }
     
 

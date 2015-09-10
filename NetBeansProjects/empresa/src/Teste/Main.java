@@ -1,10 +1,6 @@
 package Teste;
 
-//import DAO.DAOProjeto;
-
-import static DAO.DAOEmpregado.limparEmployee;
 import static Teste.SelecaoAleatoria.resultIndividuo;
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,9 +18,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        limparEmployee();
-        
+ 
         resultIndividuo(10);
        
     }   

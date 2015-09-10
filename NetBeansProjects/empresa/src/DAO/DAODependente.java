@@ -5,12 +5,11 @@
  */
 package DAO;
 
+import Modelo.Gene;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,47 +17,43 @@ import java.util.logging.Logger;
  */
 public class DAODependente {
     
-    public void viewDependent(int depId){
-        
-        PreparedStatement instrucao = null;
-        Connection conexao = null;
-        ResultSet resultado = null;
-        String sql = "";
-                
-        sql = "ALTER VIEW dependent AS SELECT * FROM dependentx WHERE sel = 'y';";
-        //conexao = ConexaoBD.conectarEmpresa();
-        
-        try{
-            instrucao = conexao.prepareStatement(sql);
-            instrucao.executeUpdate();
-                                  
-        }catch(SQLException excecao){
-            
-            System.out.println("não executou consulta");
-        }
-    }
-    
-    public void alterDependentx(int ssnId){
+   public static void viewdependent(String sqlResultado){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;
-        ResultSet resultado = null;
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
+        con.conectarEmpresa();
         
-        sql = "UPDATE dependentx SET sel = 'y' where ssn = ?;";
-        conexao = con.conectarEmpresaTeste();
-        
+        sql = "CREATE OR REPLACE VIEW dependent AS SELECT * FROM dependentx WHERE" + sqlResultado +";";
+        System.out.println(sql);
         try {
             instrucao = conexao.prepareStatement(sql);
-            instrucao.setInt(1, ssnId);
             instrucao.executeUpdate();
-            //conexao.commit();
             
-        } catch (SQLException ex) {
+            conexao.commit();
+            conexao.close();
             
-            Logger.getLogger(DAOEmpregado.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        } catch (SQLException excecao){
+            
+            System.out.println("view-dependente: " + excecao.getMessage());
+        }    
+    }
+    
+    public static String buscarEmployee(ArrayList<Gene> listaGene){
+        
+        String sqlResultado ="";
+        
+        for (int i=0; i<listaGene.size(); i++){
+            
+            if (i == listaGene.size()-1){
+                sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla();
+            }else{
+                sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla() + " OR";
+            }
+        }
+        
+        return sqlResultado;
     }
 }
