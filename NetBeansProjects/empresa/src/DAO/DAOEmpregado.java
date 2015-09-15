@@ -8,6 +8,7 @@ package DAO;
 import Modelo.Gene;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -24,10 +25,10 @@ public class DAOEmpregado {
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
-        con.conectarEmpresa();
+        conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW employee AS SELECT * FROM employeex WHERE" + sqlResultado +";";
-        System.out.println(sql);
+        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();

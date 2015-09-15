@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author ludmila
  */
-public class Individuo {
+public class Populacao {
     
     private ArrayList<Gene> listaIndividuo = new ArrayList<Gene>();
 

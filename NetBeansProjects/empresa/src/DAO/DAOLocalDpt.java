@@ -24,7 +24,7 @@ public class DAOLocalDpt {
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
-        con.conectarEmpresa();
+        conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW dept_locations AS SELECT * FROM dept_locationsx WHERE" + sqlResultado +";";
         System.out.println(sql);

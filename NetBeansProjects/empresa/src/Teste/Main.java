@@ -1,6 +1,9 @@
 package Teste;
 
-import static Teste.SelecaoAleatoria.resultIndividuo;
+//import static DAO.DAOInstrucaoOriginal.consultaInstrucao;
+
+import static Teste.TesteMutacao.testar;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +22,8 @@ public class Main {
      */
     public static void main(String[] args) {
  
-        resultIndividuo(10);
-       
+        //String sql = "select dno, count(ssn) from employee group by dno ;";
+       //resultIndividuo(100);
+       testar();
     }   
 }

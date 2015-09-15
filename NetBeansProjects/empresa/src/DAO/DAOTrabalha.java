@@ -6,10 +6,8 @@
 package DAO;
 
 import Modelo.Gene;
-import Modelo.Trabalha;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,7 +24,7 @@ public class DAOTrabalha {
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
-        con.conectarEmpresa();
+        conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW project AS SELECT * FROM projectx WHERE" + sqlResultado +";";
         System.out.println(sql);

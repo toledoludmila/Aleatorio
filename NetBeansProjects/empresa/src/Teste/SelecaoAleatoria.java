@@ -80,10 +80,9 @@ public class SelecaoAleatoria {
         return gene;
     }  
     
-    public static void resultIndividuo(int indv){
+    public static ArrayList<Gene> resultIndividuo(int indv){
         
-        //ArrayList<ResultSet> listaResultado = new ArrayList<ResultSet>();
-        ArrayList<Gene> listaGene = new ArrayList<Gene>();
+        ArrayList<Gene> individuo = new ArrayList<Gene>();
         Gene gene;
                 
         for (int i =0; i< indv; i++){
@@ -92,14 +91,11 @@ public class SelecaoAleatoria {
             gene = new Gene();
             
             gene = selecaoGene(selTabela);
-            listaGene.add(gene);
-            
+            individuo.add(gene);
         }
-        String resultado = buscarEmployee(listaGene);
-        System.out.println(resultado);
-        viewEmployee(resultado);
-           
-    }
-    
-
+        String sqlResultado = buscarEmployee(individuo);
+        viewEmployee(sqlResultado);
+        
+        return individuo;       
+    }    
 }

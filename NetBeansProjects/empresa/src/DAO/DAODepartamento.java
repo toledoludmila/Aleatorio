@@ -24,7 +24,7 @@ public class DAODepartamento {
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
-        con.conectarEmpresa();
+        conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW department AS SELECT * FROM departmentx WHERE" + sqlResultado +";";
         System.out.println(sql);

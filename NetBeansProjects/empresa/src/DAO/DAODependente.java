@@ -24,7 +24,7 @@ public class DAODependente {
         String sql = "";
         
         ConexaoBD con = new ConexaoBD();
-        con.conectarEmpresa();
+        conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW dependent AS SELECT * FROM dependentx WHERE" + sqlResultado +";";
         System.out.println(sql);
