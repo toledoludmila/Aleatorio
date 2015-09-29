@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class DAOTrabalha {
      
-    public void viewWorksOn(String sqlResultado){
+    public static void viewWorksOn(String sqlResultado){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;
@@ -26,7 +26,7 @@ public class DAOTrabalha {
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
         
-        sql = "CREATE OR REPLACE VIEW project AS SELECT * FROM projectx WHERE" + sqlResultado +";";
+        sql = "CREATE OR REPLACE VIEW works_on AS SELECT * FROM works_onx WHERE" + sqlResultado +";";
         System.out.println(sql);
         try {
             instrucao = conexao.prepareStatement(sql);

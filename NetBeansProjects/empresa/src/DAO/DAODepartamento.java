@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class DAODepartamento {
     
-    public static void viewdepartment(String sqlResultado){
+    public static void viewDepartment(String sqlResultado){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;
@@ -27,7 +27,7 @@ public class DAODepartamento {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW department AS SELECT * FROM departmentx WHERE" + sqlResultado +";";
-        System.out.println(sql);
+        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();

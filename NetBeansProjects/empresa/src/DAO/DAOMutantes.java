@@ -6,9 +6,14 @@
 package DAO;
 
 import Modelo.Mutantes;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -73,26 +78,44 @@ public class DAOMutantes {
         return listaMutantes;
     }
     
-    public static ResultSet resultMutantes(String sql){
+    public static FileWriter resultMutantes(String sql){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;
         ResultSet resultado = null;
-                
+        FileWriter fw = null;    
+        
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
         
         try {
             instrucao = conexao.prepareStatement(sql);
             resultado = instrucao.executeQuery();
+                      
+            ResultSetMetaData resultSetMetaData = resultado.getMetaData();
+            int count = resultSetMetaData.getColumnCount();
             
-            //conexao.close();
+            fw = new FileWriter(new File("resultadoMutante.txt"));        
+            BufferedWriter bw = new BufferedWriter(fw);
             
-        } catch (SQLException excecao){
+            while (resultado.next()) {
+                
+                for (int i = 1; i <= count; i++) {
+
+                    String info = resultado.getString(i);
+                    bw.write(info + " ");
+                    
+                }
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+            conexao.close();
+              
+        } catch (SQLException | IOException excecao){
             
-            System.out.println("Consulta Instrucao: " + excecao.getMessage());
+            System.out.println("resultMutantes: " + excecao.getMessage());
         }    
-        return resultado;
-    
+        return fw;
     }
 }

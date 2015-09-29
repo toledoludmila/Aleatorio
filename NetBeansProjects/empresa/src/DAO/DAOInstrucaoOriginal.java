@@ -6,9 +6,14 @@
 package DAO;
 
 import Modelo.InstrucaoOriginal;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -56,25 +61,44 @@ public class DAOInstrucaoOriginal {
         return instOriginal;
     }  
     
-    public static ResultSet resultInstrucao(String sql){
+    public static FileWriter resultInstrucao(String sql){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;
         ResultSet resultado = null;
-                
+        FileWriter fw = null;    
+        
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
         
         try {
             instrucao = conexao.prepareStatement(sql);
             resultado = instrucao.executeQuery();
+                      
+            ResultSetMetaData resultSetMetaData = resultado.getMetaData();
+            int count = resultSetMetaData.getColumnCount();
             
-            //conexao.close();
+            fw = new FileWriter(new File("resultadoOriginal.txt"));        
+            BufferedWriter bw = new BufferedWriter(fw);
             
-        } catch (SQLException excecao){
+            while (resultado.next()) {
+                
+                for (int i = 1; i <= count; i++) {
+
+                    String info = resultado.getString(i);
+                    bw.write(info + " ");
+                    
+                }
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+            conexao.close();
             
-            System.out.println("Consulta Instrucao: " + excecao.getMessage());
-        }    
-        return resultado;
+        } catch (SQLException | IOException excecao){
+            
+            System.out.println("resultIntrucao: " + excecao.getMessage());
+        }   
+        return fw;
     }
 }

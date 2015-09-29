@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class DAODependente {
     
-   public static void viewdependent(String sqlResultado){
+   public static void viewDependent(String sqlResultado){
         
         Connection conexao = null;
         PreparedStatement instrucao = null;

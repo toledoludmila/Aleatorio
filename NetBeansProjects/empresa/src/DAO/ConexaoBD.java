@@ -8,8 +8,6 @@ package DAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,11 +27,10 @@ public class ConexaoBD {
             conexao = DriverManager.getConnection(urlEmpresa, username, password);
             // Desabilita o commit automático para que seja possível fazer rollback.
             conexao.setAutoCommit(false);
-            System.out.println("conectou Banco empresa teste");
-                       
+                                   
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
             
-            Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Conectar empresa_teste: " + ex.getMessage());
         }
         return conexao;
     }
@@ -50,11 +47,10 @@ public class ConexaoBD {
             conexao = DriverManager.getConnection(urlEmpresa, username, password);
             // Desabilita o commit automático para que seja possível fazer rollback.
             conexao.setAutoCommit(false);
-            System.out.println("conectou Banco empresa");
-                       
+                                   
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
             
-            Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Conectar empresa: " + ex.getMessage());
         }
         return conexao;
     }
@@ -71,13 +67,11 @@ public class ConexaoBD {
             conexao = DriverManager.getConnection(urlMutantes, username, password);
             // Desabilita o commit automático para que seja possível fazer rollback.
             conexao.setAutoCommit(false);
-            System.out.println("conectou Banco mutantes");
             
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
             
-            Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Conectar mutantes: " + ex.getMessage());
         }
         return conexao;
-    }
-    
+    }   
 }

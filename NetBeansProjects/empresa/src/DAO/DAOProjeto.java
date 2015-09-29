@@ -27,7 +27,7 @@ public class DAOProjeto {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW project AS SELECT * FROM projectx WHERE" + sqlResultado +";";
-        System.out.println(sql);
+        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();
@@ -41,7 +41,7 @@ public class DAOProjeto {
         }    
     }
     
-    public static String buscarDependent(ArrayList<Gene> listaGene){
+    public static String buscarProject(ArrayList<Gene> listaGene){
         
         String sqlResultado ="";
         
