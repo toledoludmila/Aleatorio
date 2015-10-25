@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Gene;
+import Modelo.Individuo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  */
 public class DAOEmpregado {
     
-    public static void viewEmployee(String sqlResultado){
-        
+    public void criarViewEmployee(String sqlResultado){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
@@ -27,9 +27,7 @@ public class DAOEmpregado {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW employee AS SELECT * FROM employeex WHERE" + sqlResultado +";";
-        
-        //System.out.println(sql);
-        
+         
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();
@@ -38,15 +36,16 @@ public class DAOEmpregado {
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("view-empregado: " + excecao.getMessage());
         }    
     }
     
-    public static String buscarEmployee(ArrayList<Gene> listaGene){
-        
+    public String buscarEmployee(Individuo individuo){
         String sqlResultado ="";
-        
+        /**
+         *monta string que será passada para criar a view 
+         */
+        ArrayList<Gene> listaGene = individuo.getListaGenes();
         for (int i=0; i<listaGene.size(); i++){
             
             if (i == listaGene.size()-1){
@@ -55,7 +54,6 @@ public class DAOEmpregado {
                 sqlResultado = sqlResultado + " ssn = " + listaGene.get(i).getTupla() + " OR";
             }
         }
-        
         return sqlResultado;
     }
 }

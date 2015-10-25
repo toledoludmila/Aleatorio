@@ -5,20 +5,14 @@
  */
 package Execucao;
 
-import static DAO.DAODepartamento.buscarDepartment;
-import static DAO.DAODepartamento.viewDepartment;
-import static DAO.DAODependente.buscarDependent;
-import static DAO.DAODependente.viewDependent;
-import static DAO.DAOEmpregado.buscarEmployee;
-import static DAO.DAOEmpregado.viewEmployee;
-import static DAO.DAOLocalDpt.buscarDeptLocations;
-import static DAO.DAOLocalDpt.viewDeptLocations;
-import static DAO.DAOProjeto.buscarProject;
-import static DAO.DAOProjeto.viewProject;
-import static DAO.DAOTrabalha.buscarWorksOn;
-import static DAO.DAOTrabalha.viewWorksOn;
+import DAO.DAODepartamento;
+import DAO.DAODependente;
+import DAO.DAOEmpregado;
+import DAO.DAOLocalDpt;
+import DAO.DAOProjeto;
+import DAO.DAOTrabalha;
 import Modelo.Gene;
-import java.util.ArrayList;
+import Modelo.Individuo;
 import java.util.Random;
 
 /**
@@ -28,117 +22,150 @@ import java.util.Random;
 public class SelecaoAleatoria {
     
     public static int randInt(int min, int max) {
-        
+       /**
+         * Metodo de selecao aleatoria
+         * argumento: intervalo de tuplas da tabela
+         */
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
 
         return randomNum;
     }
     
-    public static ArrayList<Gene> selecaoGene(int indv){
+    public Individuo selecaoTuplas(int tamIndv) {
                
         int resultadoTupla;
         
-        ArrayList<Gene> individuo = new ArrayList<Gene>();
+        Individuo individuo = new Individuo();
         
-        ArrayList<Gene> individuo1 = new ArrayList<Gene>();
-        ArrayList<Gene> individuo2 = new ArrayList<Gene>();
-        ArrayList<Gene> individuo3 = new ArrayList<Gene>();
-        ArrayList<Gene> individuo4 = new ArrayList<Gene>();
-        ArrayList<Gene> individuo5 = new ArrayList<Gene>();
-        ArrayList<Gene> individuo6 = new ArrayList<Gene>(); 
+        Individuo individuo1 = new Individuo();
+        Individuo individuo2 = new Individuo();
+        Individuo individuo3 = new Individuo();
+        Individuo individuo4 = new Individuo();
+        Individuo individuo5 = new Individuo();
+        Individuo individuo6 = new Individuo(); 
         
-        for (int i =0; i< indv; i++){
+        for (int i = 0; i < tamIndv; i++){
             Gene gene = new Gene();
-            int selTabela = randInt(1,3);
-            
+            int selTabela = randInt(1,2);
+           /**
+             * selecao aleatoria de tuplas
+             */
             switch(selTabela){
                 case 1:
-                    
+                    /** 1 = Tabela Employee */
                     resultadoTupla = randInt(1,100000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo1.add(gene);
+                    individuo.addGene(gene);
+                    individuo1.addGene(gene);
 
                     break;
 
                 case 2:
-                    
+                    /** 2 = Tabela Department */
                     resultadoTupla = randInt(1,1000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo2.add(gene);
+                    individuo.addGene(gene);
+                    individuo2.addGene(gene);
 
                     break;
 
                 case 3: 
+                    /** 3 = Tabela Project */
                     resultadoTupla = randInt(1,5000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo3.add(gene);
+                    individuo.addGene(gene);
+                    individuo3.addGene(gene);
 
                     break;
 
                 case 4:
+                    /** 4 = Tabela Works_on */
                     resultadoTupla = randInt(1,75000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo4.add(gene);
+                    individuo.addGene(gene);
+                    individuo4.addGene(gene);
 
                     break;
 
                 case 5:
+                    /** 5 = Tabela Dependent */
                     resultadoTupla = randInt(1,50000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo5.add(gene);
+                    individuo.addGene(gene);
+                    individuo5.addGene(gene);
 
                     break;
 
                 case 6:
+                    /** 6 = Tabela Dept_Locations */
                     resultadoTupla = randInt(1,10000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
-                    individuo.add(gene);
-                    individuo6.add(gene);
+                    individuo.addGene(gene);
+                    individuo6.addGene(gene);
 
                     break;
             }
         }
-        
-        if (!individuo1.isEmpty()) {
-            String sqlResultado1 = buscarEmployee(individuo1);
-            viewEmployee(sqlResultado1);
+        /**
+         * passa genes employee para 
+         * criar view employee 
+         */
+        if (!individuo1.estaVazio()) {
+            DAOEmpregado daoEmp = new DAOEmpregado();
+            String sqlResultado1 = daoEmp.buscarEmployee(individuo1);
+            daoEmp.criarViewEmployee(sqlResultado1);
         }
-        
-        if (!individuo2.isEmpty()){
-            String sqlResultado2 = buscarDepartment(individuo2);
-            viewDepartment(sqlResultado2);
+        /**
+         * passa genes department para 
+         * criar view department 
+         */
+        if (!individuo2.estaVazio()){
+            DAODepartamento daoDpt = new DAODepartamento();
+            String sqlResultado2 = daoDpt.buscarDepartment(individuo2);
+            daoDpt.criarViewDepartment(sqlResultado2);
         }
-        
-        if(!individuo3.isEmpty()){
-            String sqlResultado3 = buscarProject(individuo3);
-            viewProject(sqlResultado3);
+        /**
+         * passa genes project para 
+         * criar view proect 
+         */
+        if(!individuo3.estaVazio()){
+            DAOProjeto daoPrj = new DAOProjeto();
+            String sqlResultado3 = daoPrj.buscarProject(individuo3);
+            daoPrj.criarViewProject(sqlResultado3);
         }
-        
-        if(!individuo4.isEmpty()){
-            String sqlResultado4 = buscarWorksOn(individuo4);
-            viewWorksOn(sqlResultado4);
+        /**
+         * passa genes works_on para 
+         * criar view works_on 
+         */
+        if(!individuo4.estaVazio()){
+            DAOTrabalha daoTrb = new DAOTrabalha();
+            String sqlResultado4 = daoTrb.buscarWorksOn(individuo4);
+            daoTrb.criarViewWorksOn(sqlResultado4);
         }
-        
-        if(!individuo5.isEmpty()){
-            String sqlResultado5 = buscarDependent(individuo5);
-            viewDependent(sqlResultado5);
+        /**
+         * passa genes dependent para 
+         * criar view dependent 
+         */
+        if(!individuo5.estaVazio()){
+            DAODependente daoDep = new DAODependente();
+            String sqlResultado5 = daoDep.buscarDependent(individuo5);
+            daoDep.criarViewDependent(sqlResultado5);
         }
-        
-        if(!individuo6.isEmpty()){
-            String sqlResultado6 = buscarDeptLocations(individuo6);
-            viewDeptLocations(sqlResultado6);
+        /**
+         * passa genes dept_locations para 
+         * criar view dept_locations 
+         */
+        if(!individuo6.estaVazio()){
+            DAOLocalDpt daoLoc = new DAOLocalDpt();
+            String sqlResultado6 = daoLoc.buscarDeptLocations(individuo6);
+            daoLoc.criarViewDeptLocations(sqlResultado6);
         }
         
         return individuo;

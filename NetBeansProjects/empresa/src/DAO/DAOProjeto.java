@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Gene;
+import Modelo.Individuo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  */
 public class DAOProjeto {
     
-    public static void viewProject(String sqlResultado){
-        
+    public void criarViewProject(String sqlResultado){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
@@ -36,24 +36,23 @@ public class DAOProjeto {
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("view-project: " + excecao.getMessage());
         }    
     }
     
-    public static String buscarProject(ArrayList<Gene> listaGene){
-        
+    public String buscarProject(Individuo individuo){
         String sqlResultado ="";
-        
+        /**
+         *monta string que será passada para criar a view 
+         */
+        ArrayList<Gene> listaGene = individuo.getListaGenes();
         for (int i=0; i<listaGene.size(); i++){
-            
             if (i == listaGene.size()-1){
                 sqlResultado = sqlResultado + " pnumber = " + listaGene.get(i).getTupla();
             }else{
                 sqlResultado = sqlResultado + " pnumber = " + listaGene.get(i).getTupla() + " OR";
             }
         }
-        
         return sqlResultado;
     }
 }

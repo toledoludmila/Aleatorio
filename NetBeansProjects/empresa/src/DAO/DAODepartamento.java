@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Gene;
+import Modelo.Individuo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  */
 public class DAODepartamento {
     
-    public static void viewDepartment(String sqlResultado){
-        
+    public void criarViewDepartment(String sqlResultado){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
@@ -27,7 +27,6 @@ public class DAODepartamento {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW department AS SELECT * FROM departmentx WHERE" + sqlResultado +";";
-        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();
@@ -36,15 +35,16 @@ public class DAODepartamento {
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("view-departamento: " + excecao.getMessage());
         }    
     }
     
-    public static String buscarDepartment(ArrayList<Gene> listaGene){
-        
+    public String buscarDepartment(Individuo individuo){
         String sqlResultado ="";
-        
+        /**
+         *monta string que será passada para criar a view 
+         */
+        ArrayList<Gene> listaGene = individuo.getListaGenes();
         for (int i=0; i<listaGene.size(); i++){
             
             if (i == listaGene.size()-1){
@@ -53,7 +53,6 @@ public class DAODepartamento {
                 sqlResultado = sqlResultado + " dnumber = " + listaGene.get(i).getTupla() + " OR";
             }
         }
-        
         return sqlResultado;
     }
 }

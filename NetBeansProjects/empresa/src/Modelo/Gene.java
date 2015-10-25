@@ -13,6 +13,14 @@ public class Gene {
     
     private int tabela;
     private int tupla;
+    
+    public Gene () {
+    }
+    
+    public Gene (int tabela, int tupla) {
+        this.tabela = tabela;
+        this.tupla = tupla;
+    }
         
     public int getTabela() {
         return tabela;
@@ -28,5 +36,6 @@ public class Gene {
 
     public void setTupla(int tupla) {
         this.tupla = tupla;
-    }  
+    }
+    
 }

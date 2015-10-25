@@ -9,7 +9,7 @@ package Modelo;
  *
  * @author ludmila
  */
-public class Mutantes {
+public class Mutante {
     
     private int id;
     private String categoria;

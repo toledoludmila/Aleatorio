@@ -30,5 +30,4 @@ public class InstrucaoOriginal {
         this.comando = comando;
     }
     
-        
 }

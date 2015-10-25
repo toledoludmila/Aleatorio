@@ -13,14 +13,20 @@ import java.util.ArrayList;
  */
 public class Populacao {
     
-    private ArrayList<Gene> listaIndividuo = new ArrayList<Gene>();
-
-    public ArrayList<Gene> getListaIndividuo() {
-        return listaIndividuo;
+    private int tamanhoPopulacao;
+    private ArrayList<Individuo> listaIndividuos;
+    
+    public Populacao(int tamanhoPopulacao) {
+        this.tamanhoPopulacao = tamanhoPopulacao;
+        this.listaIndividuos = new ArrayList<Individuo>(tamanhoPopulacao);
     }
 
-    public void setListaIndividuo(ArrayList<Gene> listaIndividuo) {
-        this.listaIndividuo = listaIndividuo;
+    public ArrayList<Individuo> getListaIndividuos() {
+        return listaIndividuos;
     }
-   
+
+    public void setListaIndividuos(ArrayList<Individuo> listaIndividuos) {
+        this.listaIndividuos = listaIndividuos;
+    }
+    
 }

@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Gene;
+import Modelo.Individuo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  */
 public class DAOTrabalha {
      
-    public static void viewWorksOn(String sqlResultado){
-        
+    public void criarViewWorksOn(String sqlResultado){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
@@ -27,7 +27,6 @@ public class DAOTrabalha {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW works_on AS SELECT * FROM works_onx WHERE" + sqlResultado +";";
-        System.out.println(sql);
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();
@@ -36,24 +35,23 @@ public class DAOTrabalha {
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("view-workson: " + excecao.getMessage());
         }    
     }
     
-    public static String buscarWorksOn(ArrayList<Gene> listaGene){
-        
+    public String buscarWorksOn(Individuo individuo){
         String sqlResultado ="";
-        
+        /**
+         *monta string que será passada para criar a view 
+         */
+        ArrayList<Gene> listaGene = individuo.getListaGenes();
         for (int i=0; i<listaGene.size(); i++){
-            
             if (i == listaGene.size()-1){
                 sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla();
             }else{
                 sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla() + " OR";
             }
         }
-        
         return sqlResultado;
     }
 }

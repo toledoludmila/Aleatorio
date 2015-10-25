@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Gene;
+import Modelo.Individuo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  */
 public class DAOLocalDpt {
         
-    public static void viewDeptLocations(String sqlResultado){
-        
+    public void criarViewDeptLocations(String sqlResultado){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
@@ -27,7 +27,6 @@ public class DAOLocalDpt {
         conexao = con.conectarEmpresa();
         
         sql = "CREATE OR REPLACE VIEW dept_locations AS SELECT * FROM dept_locationsx WHERE" + sqlResultado +";";
-        System.out.println(sql);
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.executeUpdate();
@@ -36,24 +35,23 @@ public class DAOLocalDpt {
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("view-localdpt: " + excecao.getMessage());
         }    
     }
     
-    public static String buscarDeptLocations(ArrayList<Gene> listaGene){
-        
+    public String buscarDeptLocations(Individuo individuo){
         String sqlResultado ="";
-        
+        /**
+         *monta string que será passada para criar a view 
+         */
+        ArrayList<Gene> listaGene = individuo.getListaGenes();
         for (int i=0; i<listaGene.size(); i++){
-            
             if (i == listaGene.size()-1){
                 sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla();
             }else{
                 sqlResultado = sqlResultado + " id = " + listaGene.get(i).getTupla() + " OR";
             }
         }
-        
         return sqlResultado;
     }
 }

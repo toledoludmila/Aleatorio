@@ -22,47 +22,40 @@ import java.sql.SQLException;
  */
 public class DAOInstrucaoOriginal {
     
-    public static InstrucaoOriginal consultaInstrucao(int idInstOriginal){
-        
+    public InstrucaoOriginal buscarInstOrig(int idInstOriginal){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         String sql = "";
         ResultSet resultado = null;
-        InstrucaoOriginal instOriginal = new InstrucaoOriginal();
         
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarMutantes();
         
+        InstrucaoOriginal instOriginal = new InstrucaoOriginal();
         sql = "SELECT * FROM instrucoes WHERE id = ?;";
-        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.setInt(1, idInstOriginal);
             resultado = instrucao.executeQuery();
             
             if (!resultado.next()){
-                
                 instOriginal = null;
-                
             } else {
                 int id = resultado.getInt(1);
                 String comando = resultado.getString(2);
                 
                 instOriginal.setId(id);
                 instOriginal.setComando(comando);
-                
             }
             conexao.close();
             
         } catch (SQLException excecao){
-            
             System.out.println("instrucao original: " + excecao.getMessage());
         }
         return instOriginal;
     }  
     
-    public static FileWriter resultInstrucao(String sql){
-        
+    public FileWriter testarInstOrig(String sql){
         Connection conexao = null;
         PreparedStatement instrucao = null;
         ResultSet resultado = null;
