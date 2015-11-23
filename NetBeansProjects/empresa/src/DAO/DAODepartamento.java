@@ -25,6 +25,7 @@ public class DAODepartamento {
         
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
+        //conexao = con.conectarEmpresaTeste();
         
         sql = "CREATE OR REPLACE VIEW department AS SELECT * FROM departmentx WHERE" + sqlResultado +";";
         try {
@@ -32,6 +33,7 @@ public class DAODepartamento {
             instrucao.executeUpdate();
             
             conexao.commit();
+            instrucao.close();
             conexao.close();
             
         } catch (SQLException excecao){

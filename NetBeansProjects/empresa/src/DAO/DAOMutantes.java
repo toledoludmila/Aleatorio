@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -74,36 +73,31 @@ public class DAOMutantes {
     public void testarMutantes(String sql, String arquivoMutante){
         Connection conexao = null;
         PreparedStatement instrucao = null;
-        ResultSet resultado = null;
         FileWriter fw = null;    
         
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
-        
+        sql = sql.toLowerCase();
+        //System.out.println("testando SQL Mutante: " + sql);
         try {
-            instrucao = conexao.prepareStatement(sql);
-            resultado = instrucao.executeQuery();
-                      
-            ResultSetMetaData resultSetMetaData = resultado.getMetaData();
-            int countColunas = resultSetMetaData.getColumnCount();
-            
-            fw = new FileWriter(new File(arquivoMutante));        
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            while (resultado.next()) {
+            instrucao = conexao.prepareStatement(sql+" into outfile '/tmp/Resultados/"+ arquivoMutante +"';");
+            instrucao.executeQuery();
                 
-                for (int i = 1; i <= countColunas; i++) {
-                    String info = resultado.getString(i);
-                    bw.write(info + " ");
-                }
-                bw.newLine();
-            }
-            bw.close();
-            fw.close();
             conexao.close();
-              
-        } catch (SQLException | IOException excecao){
+            conexao.close();
+        } catch (SQLException excecao){
             System.out.println("resultMutantes: " + excecao.getMessage());
+            try {        
+                fw = new FileWriter(new File("/tmp/Resultados/"+arquivoMutante));
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write("Erro");
+                                
+                bw.close();
+                fw.close();
+            } catch (IOException ex) {
+                System.out.println("resultMutantes IOException: "+ ex.getMessage());
+            }
+            
         }    
     }
 }

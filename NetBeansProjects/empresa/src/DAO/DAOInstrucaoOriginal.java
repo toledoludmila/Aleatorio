@@ -6,14 +6,10 @@
 package DAO;
 
 import Modelo.InstrucaoOriginal;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -33,6 +29,7 @@ public class DAOInstrucaoOriginal {
         
         InstrucaoOriginal instOriginal = new InstrucaoOriginal();
         sql = "SELECT * FROM instrucoes WHERE id = ?;";
+        
         try {
             instrucao = conexao.prepareStatement(sql);
             instrucao.setInt(1, idInstOriginal);
@@ -47,6 +44,7 @@ public class DAOInstrucaoOriginal {
                 instOriginal.setId(id);
                 instOriginal.setComando(comando);
             }
+            instrucao.close();
             conexao.close();
             
         } catch (SQLException excecao){
@@ -55,43 +53,23 @@ public class DAOInstrucaoOriginal {
         return instOriginal;
     }  
     
-    public FileWriter testarInstOrig(String sql){
+    public void testarInstOrig(String sql){
         Connection conexao = null;
         PreparedStatement instrucao = null;
-        ResultSet resultado = null;
         FileWriter fw = null;    
         
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
-        
+        sql = sql.toLowerCase();
         try {
-            instrucao = conexao.prepareStatement(sql);
-            resultado = instrucao.executeQuery();
-                      
-            ResultSetMetaData resultSetMetaData = resultado.getMetaData();
-            int count = resultSetMetaData.getColumnCount();
+            instrucao = conexao.prepareStatement(sql + " into outfile '/tmp/Resultados/resultadoOriginal.txt';");
+            instrucao.executeQuery();
+                  
+            instrucao.close();
+            conexao.close();   
+        } catch (SQLException ex){
             
-            fw = new FileWriter(new File("resultadoOriginal.txt"));        
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            while (resultado.next()) {
-                
-                for (int i = 1; i <= count; i++) {
-
-                    String info = resultado.getString(i);
-                    bw.write(info + " ");
-                    
-                }
-                bw.newLine();
-            }
-            bw.close();
-            fw.close();
-            conexao.close();
-            
-        } catch (SQLException | IOException excecao){
-            
-            System.out.println("resultIntrucao: " + excecao.getMessage());
+            System.out.println("resultIntrucao: " + ex.getMessage());
         }   
-        return fw;
     }
 }

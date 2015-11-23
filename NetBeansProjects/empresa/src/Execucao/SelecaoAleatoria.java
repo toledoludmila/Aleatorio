@@ -21,18 +21,31 @@ import java.util.Random;
  */
 public class SelecaoAleatoria {
     
-    public static int randInt(int min, int max) {
+    /*public static int randInt(int min, int max) {
        /**
          * Metodo de selecao aleatoria
          * argumento: intervalo de tuplas da tabela
          */
-        Random rand = new Random();
+        /*Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
 
         return randomNum;
+    }*/
+    
+    public int escolheTabela(int i){
+        int selTabela;
+        
+        if(i <= 705){
+            selTabela = 0;
+            return selTabela;  
+        }else{
+            selTabela = 1;
+            return selTabela;
+        }
     }
     
     public Individuo selecaoTuplas(int tamIndv) {
+        Random rand = new Random();
                
         int resultadoTupla;
         
@@ -47,44 +60,46 @@ public class SelecaoAleatoria {
         
         for (int i = 0; i < tamIndv; i++){
             Gene gene = new Gene();
-            int selTabela = randInt(1,2);
+            int selTabela = rand.nextInt(2);
+            
+            //int selTabela = escolheTabela(i);
            /**
              * selecao aleatoria de tuplas
              */
             switch(selTabela){
-                case 1:
+                case 0:
                     /** 1 = Tabela Employee */
-                    resultadoTupla = randInt(1,100000);
+                    resultadoTupla = rand.nextInt(100000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);
                     individuo1.addGene(gene);
-
+                    //System.out.println("tabela: " + selTabela +" Tupla: " + resultadoTupla);
                     break;
 
-                case 2:
+                case 1:
                     /** 2 = Tabela Department */
-                    resultadoTupla = randInt(1,1000);
+                    resultadoTupla = rand.nextInt(1000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);
                     individuo2.addGene(gene);
-
+                    //System.out.println("tabela: " + selTabela +" Tupla: " + resultadoTupla);
                     break;
 
-                case 3: 
+                case 2: 
                     /** 3 = Tabela Project */
-                    resultadoTupla = randInt(1,5000);
+                    resultadoTupla = rand.nextInt(5000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);
                     individuo3.addGene(gene);
-
+                    //System.out.println("tabela: " + selTabela +" Tupla: " + resultadoTupla);
                     break;
 
-                case 4:
+                case 3:
                     /** 4 = Tabela Works_on */
-                    resultadoTupla = randInt(1,75000);
+                    resultadoTupla = rand.nextInt(75000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);
@@ -92,9 +107,9 @@ public class SelecaoAleatoria {
 
                     break;
 
-                case 5:
+                case 4:
                     /** 5 = Tabela Dependent */
-                    resultadoTupla = randInt(1,50000);
+                    resultadoTupla = rand.nextInt(50000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);
@@ -102,9 +117,9 @@ public class SelecaoAleatoria {
 
                     break;
 
-                case 6:
+                case 5:
                     /** 6 = Tabela Dept_Locations */
-                    resultadoTupla = randInt(1,10000);
+                    resultadoTupla = rand.nextInt(10000);
                     gene.setTabela(selTabela);
                     gene.setTupla(resultadoTupla);
                     individuo.addGene(gene);

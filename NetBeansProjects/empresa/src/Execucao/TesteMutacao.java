@@ -7,11 +7,13 @@ package Execucao;
 
 import DAO.DAOInstrucaoOriginal;
 import DAO.DAOMutantes;
+import static Execucao.Logs.registrarLog;
 import Modelo.InstrucaoOriginal;
 import Modelo.Mutante;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -24,19 +26,35 @@ public class TesteMutacao {
         
         InstrucaoOriginal instOrig = new InstrucaoOriginal();
         DAOInstrucaoOriginal daoInst = new DAOInstrucaoOriginal();
-        instOrig = daoInst.buscarInstOrig(idInstOrig);
-        
-        ArrayList<Mutante> listaMutantes = new ArrayList<Mutante>();
         DAOMutantes daoInstMut = new DAO.DAOMutantes();
+        ArrayList<Mutante> listaMutantes = new ArrayList<Mutante>();
+        
+        instOrig = daoInst.buscarInstOrig(idInstOrig);
         listaMutantes = daoInstMut.buscarMutantes(idInstOrig);
         
+        /**
+          * gera o arquivo resultadoOriginal.txt
+          */
+        String sqlOrig = instOrig.getComando();
+        DAOInstrucaoOriginal daoInstRes = new DAOInstrucaoOriginal();
+        daoInstRes.testarInstOrig(sqlOrig);
+        
+        /**
+         * Executa o md5deep para o resultadoOriginal.txt
+         */
+        try {
+            ProcessBuilder pbo = new ProcessBuilder("md5deep", "-q", "/tmp/Resultados/resultadoOriginal.txt", "-W", "md5Original.txt");
+            pbo.redirectErrorStream(true);
+            Process po = pbo.start();
+            po.waitFor();
+            po.destroy();
+            
+        } catch (IOException | InterruptedException ex) {
+            System.out.println("md5Deep: " + ex.getMessage());
+        }
+        
+        
         for (int i = 0; i < listaMutantes.size(); i++) {
-            /**
-             * gera o arquivo resultadoOriginal.txt
-             */
-            String sqlOrig = instOrig.getComando();
-            DAOInstrucaoOriginal daoInstRes = new DAOInstrucaoOriginal();
-            daoInstRes.testarInstOrig(sqlOrig);
             /**
              * Gera o arquivo resultadoMutante_i.txt
              */
@@ -47,18 +65,9 @@ public class TesteMutacao {
             
             try {
                 /**
-                 * Executa o md5deep para o resultadoOriginal.txt
-                 */
-                ProcessBuilder pbo = new ProcessBuilder("md5deep", "-q", "resultadoOriginal.txt", "-W", "md5Original.txt");
-                pbo.redirectErrorStream(true);
-                Process po = pbo.start();
-                po.waitFor();
-                po.destroy();
-                
-                /**
                  * Executa o md5deep para o resultadoMutante_i.txt
                  */
-                ProcessBuilder pbm = new ProcessBuilder("md5deep", "-q", arquivoMutante, "-W", "md5Mutante_" + i + ".txt");
+                ProcessBuilder pbm = new ProcessBuilder("md5deep", "-q", "/tmp/Resultados/" + arquivoMutante, "-W", "md5Mutante_" + i + ".txt");
                 pbm.redirectErrorStream(true);
                 Process pm = pbm.start();
                 pm.waitFor();
@@ -71,10 +80,12 @@ public class TesteMutacao {
         return listaMutantes;
     }
     
-    public float escoreMutacao(ArrayList<Mutante> listaMutantes){
-        float mutantesMortos = 0;
-        float mutantesVivos = 0;
-        
+    public double escoreMutacao(ArrayList<Mutante> listaMutantes){
+        double mutantesMortos = 0;
+        double mutantesVivos = 0;
+        NumberFormat doubleFormat = NumberFormat.getInstance();
+        doubleFormat.setMaximumFractionDigits(4);
+                
         for (int i = 0; i < listaMutantes.size(); i++) {
             try {
                 /**
@@ -97,6 +108,7 @@ public class TesteMutacao {
                  */
                 if (md5Original.equals(md5Mutante)){                    
                     mutantesVivos++;
+                    //registrarLog("SQL Mutante "+ i +" vivo: " + listaMutantes.get(i).getComando());
                 } else{
                     mutantesMortos++;
                 }
@@ -105,15 +117,15 @@ public class TesteMutacao {
                     System.out.println("md5sum: " + ex.getMessage());
             }
         }
-              
-        System.out.println("Mutantes mortos: " + mutantesMortos);
-        System.out.println("Mutantes vivos: " + mutantesVivos);
+        registrarLog("Total de mutantes: "+ listaMutantes.size());      
+        registrarLog("Mutantes mortos: " + mutantesMortos);
+        registrarLog("Mutantes vivos: " + mutantesVivos);
         
-        float escore = (mutantesMortos / listaMutantes.size());
-        System.out.println("Escore: " + escore);
+        double escore = (mutantesMortos / listaMutantes.size());
+        registrarLog("Escore: "+ doubleFormat.format(escore));
         
-        System.out.println("\n");
         
         return escore;
     }
+        
 }

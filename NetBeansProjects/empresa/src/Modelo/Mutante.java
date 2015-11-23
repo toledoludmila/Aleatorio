@@ -10,7 +10,6 @@ package Modelo;
  * @author ludmila
  */
 public class Mutante {
-    
     private int id;
     private String categoria;
     private String tipo;
@@ -56,5 +55,5 @@ public class Mutante {
     public void setIdInstrucao(int idInstrucao) {
         this.idInstrucao = idInstrucao;
     }
-    
+ 
 }

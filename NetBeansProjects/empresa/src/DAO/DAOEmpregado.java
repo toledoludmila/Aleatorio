@@ -25,6 +25,7 @@ public class DAOEmpregado {
         
         ConexaoBD con = new ConexaoBD();
         conexao = con.conectarEmpresa();
+        //conexao = con.conectarEmpresaTeste();
         
         sql = "CREATE OR REPLACE VIEW employee AS SELECT * FROM employeex WHERE" + sqlResultado +";";
          
@@ -33,6 +34,7 @@ public class DAOEmpregado {
             instrucao.executeUpdate();
             
             conexao.commit();
+            instrucao.close();
             conexao.close();
             
         } catch (SQLException excecao){

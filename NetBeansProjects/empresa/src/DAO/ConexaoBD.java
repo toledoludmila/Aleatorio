@@ -15,30 +15,12 @@ import java.sql.SQLException;
  */
 public class ConexaoBD {
        
-    public Connection conectarEmpresaTeste(){
-        
-        Connection conexao = null;
-        String urlEmpresa = "jdbc:mysql://localhost:3306/empresa_teste";
-        String username = "root";
-        String password = "senha";
-        
-        try{
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexao = DriverManager.getConnection(urlEmpresa, username, password);
-            // Desabilita o commit automático para que seja possível fazer rollback.
-            conexao.setAutoCommit(false);
-                                   
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
-            
-            System.out.println("Conectar empresa_teste: " + ex.getMessage());
-        }
-        return conexao;
-    }
-    
     public Connection conectarEmpresa(){
         
         Connection conexao = null;
-        String urlEmpresa = "jdbc:mysql://localhost:3306/empresa";
+        //String urlEmpresa = "jdbc:mysql://localhost:3306/empresa";
+        //String urlEmpresa = "jdbc:mysql://localhost:3306/empresa_ludmila";
+        String urlEmpresa = "jdbc:mysql://localhost:3306/empresa_leonardo";
         String username = "root";
         String password = "senha";
         
